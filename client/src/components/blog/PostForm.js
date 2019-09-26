@@ -4,6 +4,12 @@ import { Form } from 'semantic-ui-react';
 class PostForm extends Component {
   state = { title: '', body: '' }
 
+  componentDidMount() {
+    if (this.props.id) {
+      this.setState({ title: this.props.title, body: this.props.body })
+    }
+  }
+
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
@@ -11,7 +17,12 @@ class PostForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.add(this.state)
+    if (this.props.id) {
+      this.props.update(this.props.id, this.state)
+      this.props.toggleEdit()
+    } else {
+      this.props.add(this.state)
+    }
     this.setState({ title: '', body: ''})
   }
 
